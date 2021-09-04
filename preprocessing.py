@@ -51,8 +51,7 @@ class DataCleaning:
         for i, row in data.iterrows():
             is_in = True
             for metier in GROUP:
-                elm = GROUP[metier]
-                if row.poste in elm:
+                if row.poste in GROUP[metier]:
                     metiers.append(metier)
                     is_in = False
 
