@@ -1,0 +1,4 @@
+gsheetsdb==0.1.13
+streamlit==0.88.0
+plotly==4.14.3
+pandas~=1.2.4
