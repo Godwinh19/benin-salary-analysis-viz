@@ -2,6 +2,7 @@ import streamlit as st
 from gsheetsdb import connect
 import pandas as pd
 from preprocessing import DataCleaning
+import plotly.express as px
 import plotly.graph_objects as go
 from texts import *
 
@@ -32,7 +33,9 @@ st.header("Suivie des metiers dans le temps")
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=data['date'], y=data['metiers'], mode='lines+markers',
                          line=dict(width=2,
-                                   dash='dashdot')
+                                   ),
+                         hovertext=data['metiers'],
+                         hoverinfo="text",
                          ))
 st.plotly_chart(fig)
 
@@ -41,6 +44,7 @@ st.header("Salaire des informaticiens au Bénin")
 fig = go.Figure()
 fig.add_trace(go.Histogram(x=data['salaire_debut'], name='Salaire au début'))
 fig.add_trace(go.Histogram(x=data['salaire_actuel'], name='Salaire actuel'))
+fig.layout.yaxis.title.text = f"Nombre d'informatien / {data.shape[0]}"
 st.plotly_chart(fig)
 salaire_expander = st.expander(label='Lire plus')
 with salaire_expander:
@@ -50,7 +54,6 @@ with salaire_expander:
 st.header("Les différentes postes en informatique au Bénin")
 fig = go.Figure()
 fig.add_trace(go.Histogram(y=data['metiers'], orientation='h'))
-
 st.plotly_chart(fig)
 
 
@@ -67,6 +70,8 @@ st.plotly_chart(fig)
 satisfaction = pd.DataFrame(data['satisfaction'].value_counts())
 st.header("Satisfaction des informaticiens par rapport à leur salaire")
 fig = go.Figure()
-fig.add_trace(go.Bar(y=satisfaction.satisfaction, orientation='v'))
+fig.add_trace(go.Bar(y=satisfaction.satisfaction, orientation='v', marker=dict(color='green')))
+fig.layout.yaxis.title.text = "Nombre d'informatien"
+fig.layout.xaxis.title.text = "Satisfaction"
 st.plotly_chart(fig)
 st.markdown(TEXT_SATISFACTION)
