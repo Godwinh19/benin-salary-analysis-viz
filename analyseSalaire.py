@@ -10,7 +10,7 @@ from unidecode import unidecode
 conn = connect()
 
 
-@st.cache(ttl=6000)
+@st.cache(ttl=600)
 def run_query(query):
     rows = conn.execute(query, headers=1)
     return rows
