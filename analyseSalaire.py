@@ -5,11 +5,12 @@ from preprocessing import DataCleaning
 import plotly.express as px
 import plotly.graph_objects as go
 from texts import *
+from unidecode import unidecode
 
 conn = connect()
 
 
-@st.cache(ttl=600)
+@st.cache(ttl=6000)
 def run_query(query):
     rows = conn.execute(query, headers=1)
     return rows
@@ -30,15 +31,13 @@ st.sidebar.write(LINK_TO_ARTICLE)
 st.sidebar.info(CITATION)
 
 st.header("Suivie des metiers dans le temps")
-fig = go.Figure()
-fig.add_trace(go.Scatter(x=data['date'], y=data['metiers'], mode='lines+markers',
-                         line=dict(width=2,
-                                   ),
-                         hovertext=data['metiers'],
-                         hoverinfo="text",
-                         ))
+fig = px.scatter(data_frame=data, x='date', y='metiers', color='metiers',
+              symbol='metiers'
+              )
+fig.update_layout(showlegend=False,
+                  autosize=False,
+                  margin=dict(autoexpand=False, l=150, r=0, t=0))
 st.plotly_chart(fig)
-
 
 st.header("Salaire des informaticiens au Bénin")
 fig = go.Figure()
@@ -50,18 +49,15 @@ salaire_expander = st.expander(label='Lire plus')
 with salaire_expander:
     TEXT_SALAIRE
 
-
 st.header("Les différentes postes en informatique au Bénin")
 fig = go.Figure()
 fig.add_trace(go.Histogram(y=data['metiers'], orientation='h'))
 st.plotly_chart(fig)
 
-
 st.header("Nombre d’années d’expérience des informaticiens au Bénin")
 experience_expander = st.expander(label='Lire plus')
 with experience_expander:
     TEXT_EXPERIENCE
-
 
 fig = go.Figure()
 fig.add_trace(go.Histogram(y=data['experience'], orientation='h'))
@@ -75,3 +71,9 @@ fig.layout.yaxis.title.text = "Nombre d'informatien"
 fig.layout.xaxis.title.text = "Satisfaction"
 st.plotly_chart(fig)
 st.markdown(TEXT_SATISFACTION)
+
+st.header("Salaires moyens et satisfaction moyenne relativement aux metiers")
+data = data[['salaire_debut', 'salaire_actuel', 'satisfaction', 'metiers']]
+data['metiers_decode'] = data['metiers'].apply(lambda x: unidecode(x).lower())
+df = data.groupby('metiers_decode').mean()
+st.dataframe(df)

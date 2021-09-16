@@ -6,7 +6,7 @@ GROUP = {
     "dev_backend": ["Developeur Backend", "Developer back-end", "Développeur Web Backend", "Développeur JEE"],
     "fullstack": ["Full stack web developer", "Développeur Web Full Stack", "Full Stack Dev",
                   "Développeur Web FullStack et Mobile ", "Développeur Web (Back end et front end) "],
-    "dev_web": ['Développeur web', "Développeur Web"],
+    "dev_web": ['Développeur web', "Développeur Web", "Developpeur web"],
     "mobile": ["Développeur web et mobile ", "Développeur web et mobile", "Développeur Android et python"],
     "data_analyst": ["Data Analyst ", "Data Analyst", "IT & Data Analyste"],
     "manager": ["IT Project Manager ", "Lead developer", "Project Manager Junior", "Big Data Manager",
